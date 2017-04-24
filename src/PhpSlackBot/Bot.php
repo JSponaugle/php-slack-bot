@@ -102,8 +102,20 @@ class Bot {
                 $command->setContext($this->context);
                 $command->executeCommand($data, $this->context);
             }
+		if ($data['type'] == "member_joined_channel") {
+		$data['text'] = "!welcome";
+            $command = $this->getCommand($data);
+            if ($command instanceof Command\BaseCommand) {
+                $command->setClient($client);
+                $command->setChannel($data['channel']);
+                $command->setUser($data['user']);
+                $command->setContext($this->context);
+                $command->executeCommand($data, $this->context);
+            }
+		}
+		 
         });
-
+	    
         /* Webserver */
         if (null !== $this->webserverPort) {
             $logger->notice("Listening on port ".$this->webserverPort);
