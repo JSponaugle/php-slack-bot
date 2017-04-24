@@ -190,10 +190,10 @@ class Bot {
 
     public function loadInternalCommands() {
         $commands = array(
-                          new \PhpSlackBot\Command\PingPongCommand,
-                          new \PhpSlackBot\Command\CountCommand,
-                          new \PhpSlackBot\Command\DateCommand,
-                          new \PhpSlackBot\Command\PokerPlanningCommand,
+//                           new \PhpSlackBot\Command\PingPongCommand,
+//                           new \PhpSlackBot\Command\CountCommand,
+//                           new \PhpSlackBot\Command\DateCommand,
+//                           new \PhpSlackBot\Command\PokerPlanningCommand,
                           );
         foreach ($commands as $command) {
             if (!isset($this->commands[$command->getName()])) {
