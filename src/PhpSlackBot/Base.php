@@ -140,13 +140,34 @@ abstract class Base {
         return false;
     }
 
-    protected function getImIdFromUserId($userId) {
-        foreach ($this->context['ims'] as $im) {
-            if ($im['user'] == $userId) {
-                return $im['id'];
-            }
+        protected function getImIdFromUserId($userId)
+        {
+                foreach ($this->context['ims'] as $im) {
+                        if ($im['user'] == $userId) {
+                                return $im['id'];
+                        }
+                }
+                $url = 'https://slack.com/api/im.open';
+                $this->params['token'] = 'xoxb-80853573175-YAUj9SDSFmPxeUTUEJdrYInD';
+                $this->params['user'] = $userId;
+                $ch  = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($this->params));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $body = curl_exec($ch);
+                if ($body === false) {
+                        throw new \Exception('Error when requesting ' . $url . ' ' . curl_error($ch));
+                }
+                curl_close($ch);
+                $response = json_decode($body, true);
+                if (is_null($response)) {
+                        throw new \Exception('Error when decoding body (' . $body . ').');
+                }
+                if (isset($response['error'])) {
+                        echo $body;
+                        throw new \Exception($response['error']);
+                }
+                return $response['channel']['id'];
         }
-        return false;
-    }
+
 
 }
