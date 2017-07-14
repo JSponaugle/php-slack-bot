@@ -60,6 +60,26 @@ abstract class Base {
         return $this->channel;
     }
 
+        protected function senddm($Username, $usernameForMention, $message)
+        {
+                if (!$Username) {
+                        return;
+                }
+//              $userId    = $this->getUserIdFromUserName($Username);
+                echo "UserID: " . $Username . "\r\n";
+                $channelId = $this->getImIdFromUserId($Username);
+                echo "ChannelID: " . $channelId . "\r\n";
+                $usernameToSend = $this->getUserIdFromUserName($usernameForMention);
+                if (!$usernameToSend) {
+                        $usernameToSend = null;
+                }
+                if ($channelId) {
+                        $this->send($channelId, $usernameToSend, $message);
+                } else {
+                        throw new \Exception('Cannot resolve channel ID to to send the message');
+                }
+        }	
+	
     protected function send($channel, $username, $message) {
         $response = array(
                           'id' => time(),
